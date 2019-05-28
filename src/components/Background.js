@@ -6,7 +6,7 @@ const Background = () => {
     useEffect(() => {
         if (ref.current) {
             const canvas = ref.current;
-            canvas.style = "position: fixed; z-index: -1;";
+            canvas.style = "position: fixed; z-index: -1; top: 0; left: 0;";
             particleSim(canvas);
         }
     }, []);

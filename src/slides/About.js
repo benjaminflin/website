@@ -27,10 +27,10 @@ const About = ({ active }) => {
     }, [active]);
 
     return (
-        <div class={container}>
+        <div className={container}>
             <img ref={imgRef} src="https://graph.facebook.com/100005109492782/picture?type=large" alt="profile" className={profile} />
             <h1 className={header}>About Me</h1>
-            <div class={separator} ref={separatorRef} />
+            <div className={separator} ref={separatorRef} />
             <p ref={textRef} className={paragraph}>
                 <strong className={strong}>H</strong>i, I'm Ben Flin. I grew up in Davis, California and I'm currently enrolled at Columbia University (CC, '21), majoring in Computer Science. I do
                 frontend development right now and I'm currently teaching myself about machine learning. I also play jazz piano and love{" "}

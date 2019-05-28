@@ -1,7 +1,7 @@
 import React, { useRef, useLayoutEffect } from "react";
 import { connect } from "react-redux";
-
 import { content } from "./Slide.module.css";
+
 const Slide = ({ children, index, slidePositions, activeSlide, lastSlide }) => {
     const ref = useRef(null);
 
@@ -43,4 +43,4 @@ const Slide = ({ children, index, slidePositions, activeSlide, lastSlide }) => {
     );
 };
 
-export default connect(state => state)(Slide);
+export default connect(({ activeSlide, slidePositions, lastSlide }) => ({ activeSlide, slidePositions, lastSlide }))(Slide);

@@ -25,7 +25,9 @@
 }
 .links a {
     margin: 5pt;
+    font-size: 10pt;
     color: white;
+    text-decoration: none;
 }
 .links a:hover {
     transform: scale(1.1);

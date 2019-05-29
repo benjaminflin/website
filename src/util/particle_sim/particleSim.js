@@ -7,7 +7,12 @@ import { stream, debounce } from "../stream";
 const particleSim = canvas => {
     // create canvas context
     const SIM_SIZE = 128;
-    const { gl } = createGLContext(SIM_SIZE, SIM_SIZE, false);
+    let gl;
+    try {
+        gl = createGLContext(SIM_SIZE, SIM_SIZE, false).gl;
+    } catch (e) {
+        return particleSim2(canvas);
+    }
     const NUM_PARTICLES = SIM_SIZE * SIM_SIZE * 4;
 
     const velocityComputeShader = `
@@ -168,7 +173,7 @@ const particleSim = canvas => {
         shader.bind();
         gl2.clear(gl.COLOR_BUFFER_BIT);
         gl2.drawArrays(gl.POINTS, 0, data.length / 4);
-        requestAnimationFrame(update);
+        requestIdleCallback(update);
     };
     update();
     const resize = (width, height) => {
@@ -189,6 +194,82 @@ const particleSim = canvas => {
     resize$.subscribe(() => {
         resize(window.innerWidth, window.innerHeight);
     });
+};
+
+// backup particle simulation for browsers without webgl2
+const particleSim2 = canvas => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext("2d");
+    const particles = [];
+    const NUM_PARTICLES = 50;
+    const MAX_LIFETIME = 300;
+    const MAX_RADIUS = 10;
+    const createParticle = (x, y, dx, dy, lifetime, health = lifetime) => ({ x, y, dx, dy, lifetime, health });
+
+    for (let i = 0; i < NUM_PARTICLES; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const dx = Math.random() * 2.0 - 1.0;
+        const dy = Math.random() * 2.0 - 1.0;
+        const lifetime = Math.floor(Math.random() * MAX_LIFETIME);
+        particles.push(createParticle(x, y, dx, dy, lifetime));
+    }
+
+    const resetParticle = p => {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const dx = Math.random() * 2.0 - 1.0;
+        const dy = Math.random() * 2.0 - 1.0;
+        const lifetime = Math.floor(Math.random() * MAX_LIFETIME);
+        p.x = x;
+        p.y = y;
+        p.dx = dx;
+        p.dy = dy;
+        p.lifetime = lifetime;
+        p.health = lifetime;
+    };
+
+    const update = () => {
+        for (const p of particles) {
+            p.x += p.dx;
+            p.y += p.dy;
+            if (p.health-- === 0) {
+                resetParticle(p);
+            }
+        }
+    };
+
+    const draw = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "rgb(77, 77, 77)";
+        for (const p of particles) {
+            const radius = MAX_RADIUS * ((Math.sin((2.0 * Math.PI * (p.lifetime - p.health)) / p.lifetime - Math.PI / 2) + 1.0) / 2.0);
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.closePath();
+        }
+    };
+
+    const animate = () => {
+        update();
+        draw();
+        requestAnimationFrame(animate);
+    };
+
+    const resize$ = stream(emit => {
+        window.addEventListener("resize", () => {
+            emit(null);
+        });
+    }).pipe(debounce(500));
+
+    resize$.subscribe(() => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    animate();
 };
 
 export default particleSim;

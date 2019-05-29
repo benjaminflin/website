@@ -61,6 +61,10 @@ const Welcome = ({ active }) => {
                 </div>
             </div>
             <div className={subtitle}>Web Developer and Musician</div>
+            <div className={links}>
+                <a href="mailto:ben@flin.org">ben@flin.org</a>
+                <a href="tel:530-400-1959">530.400.1959</a>
+            </div>
             <div ref={linkRef} className={links}>
                 <a href="https://instagram.com/benflin">
                     <i className="fab fa-instagram" />

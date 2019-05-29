@@ -53,6 +53,7 @@ export const createProgram = ({ width, height, shader: shaderSource, uniforms })
     // execute function which renders to quad and return variable
     const execute = (name = "render_result") => {
         vao.bind();
+        vbo.bind();
         shader.bind();
         gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
         textures.forEach((tex, i) => tex.bind(i));

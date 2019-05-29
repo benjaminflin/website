@@ -1,5 +1,5 @@
 const createGLContext = (width, height, usePixelRatio = true, canvas = document.createElement("canvas")) => {
-    const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
+    const gl = canvas.getContext("webgl2");
     const ext = gl.getExtension("EXT_color_buffer_float");
 
     if (!gl || !ext) throw Error("webgl + extensions not supported");

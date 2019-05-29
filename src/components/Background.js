@@ -9,7 +9,9 @@ const Background = () => {
             canvas.style = "position: fixed; z-index: -1; top: 0; left: 0;";
             try {
                 particleSim(canvas);
-            } catch (e) {}
+            } catch (e) {
+                console.error(e);
+            }
         }
     }, []);
 

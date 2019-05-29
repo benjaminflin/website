@@ -3,7 +3,7 @@ import createVBO from "./createVBO";
 import createVAO from "./createVAO";
 import createGLContext from "./createGLContext";
 import createShader from "./createShader";
-
+import { stream, debounce } from "../stream";
 const particleSim = canvas => {
     // create canvas context
     const SIM_SIZE = 128;
@@ -146,18 +146,18 @@ const particleSim = canvas => {
     gl2.clearColor(0.2, 0.2, 0.2, 1);
     document.body.appendChild(renderCanvas);
     const vertexShader = `
-    attribute vec4 position;
-    void main(void) {
-        gl_Position = position;
-        gl_PointSize = 10.0;
-    }
-`;
+        attribute vec4 position;
+        void main(void) {
+            gl_Position = position;
+            gl_PointSize = 10.0;
+        }
+    `;
     const fragmentShader = `
-    precision mediump float;
-    void main(void) {
-        gl_FragColor = vec4(vec3(0.3), 1.0);
-    }
-`;
+        precision mediump float;
+        void main(void) {
+            gl_FragColor = vec4(vec3(0.3), 1.0);
+        }
+    `;
     const shader = createShader({ vertexSource: vertexShader, fragmentSource: fragmentShader })(gl2);
     const update = () => {
         const data = simulate();
@@ -171,6 +171,24 @@ const particleSim = canvas => {
         requestAnimationFrame(update);
     };
     update();
+    const resize = (width, height) => {
+        const pixelRatio = window.devicePixelRatio;
+        canvas.width = width * pixelRatio;
+        canvas.height = height * pixelRatio;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        gl2.viewport(0, 0, width * pixelRatio, height * pixelRatio);
+    };
+
+    const resize$ = stream(emit => {
+        window.addEventListener("resize", () => {
+            emit(null);
+        });
+    }).pipe(debounce(500));
+
+    resize$.subscribe(() => {
+        resize(window.innerWidth, window.innerHeight);
+    });
 };
 
 export default particleSim;

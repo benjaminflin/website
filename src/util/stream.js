@@ -43,13 +43,25 @@ export const map = fn => emitter =>
 export const group = ms => emitter => {
     let queue = [];
     let timeout;
-    stream(emit => {
+    return stream(emit => {
         emitter(value => {
             queue.push(value);
             clearTimeout(timeout);
             timeout = setTimeout(() => {
                 emit(queue);
                 queue = [];
+            }, ms);
+        });
+    });
+};
+
+export const debounce = ms => emitter => {
+    let timeout;
+    return stream(emit => {
+        emitter(value => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                emit(value);
             }, ms);
         });
     });

@@ -12,6 +12,7 @@ const Background = () => {
             } catch (e) {}
         }
     }, []);
+
     return <canvas ref={ref} />;
 };
 

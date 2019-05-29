@@ -41,13 +41,3 @@
     overflow: hidden;
     padding: 5px;
 }
-
-.about {
-    position: absolute;
-    font-size: 16pt;
-    top: 50%;
-    right: 16pt;
-}
-.about:hover {
-    transform: scale(1.1);
-}

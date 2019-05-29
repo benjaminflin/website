@@ -1,7 +1,7 @@
 import React from "react";
 import useAnimation from "../util/useAnimation";
-import { container, title, links, separator, name, about, subtitle } from "./Welcome.module.css";
-const Welcome = ({ active, incrementSlide }) => {
+import { container, title, links, separator, name, subtitle } from "./Welcome.module.css";
+const Welcome = ({ active }) => {
     const firstNameRef = useAnimation(
         animate => {
             const keyframes = [
@@ -71,9 +71,6 @@ const Welcome = ({ active, incrementSlide }) => {
                 <a href="https://facebook.com/benrflin">
                     <i className="fab fa-facebook-f" />
                 </a>
-            </div>
-            <div className={about} onClick={incrementSlide}>
-                <i className="fas fa-arrow-right" />
             </div>
         </div>
     );

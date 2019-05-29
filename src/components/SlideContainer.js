@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
-import { container, fakecontent } from "./Slide.module.css";
+import { container } from "./Slide.module.css";
 const SlideContainer = ({ children, activeSlide, dispatch }) => {
     const ref = useRef(null);
 
@@ -22,13 +22,12 @@ const SlideContainer = ({ children, activeSlide, dispatch }) => {
             el.removeEventListener("scroll", setSlide);
         };
     });
+    useEffect(() => {
+        dispatch({ type: "SET_NUM_SLIDES", numSlides: children.length });
+    }, [dispatch, children]);
     return (
         <div ref={ref} className={container}>
             {children}
-            {/* render fake content for programmatic scrolling */}
-            {children.map((_, i) => (
-                <div key={i} className={fakecontent} />
-            ))}
         </div>
     );
 };

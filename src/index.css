@@ -7,12 +7,12 @@ body {
     background-color: rgb(51, 51, 51);
     color: white;
     -ms-overflow-style: none;
-    scrollbar-width: none;
+    /* scrollbar-width: none; */
 }
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 ::-webkit-scrollbar {
-    display: none;
+    /* display: none; */
 }

@@ -1,10 +1,9 @@
-import React, { useRef, useLayoutEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { content } from "./Slide.module.css";
+import useAnimation from "../util/useAnimation";
 
 const Slide = ({ children, index, slidePositions, activeSlide, lastSlide }) => {
-    const ref = useRef(null);
-
     // the slide position for this slide
     const slidePos = slidePositions[index];
 
@@ -23,19 +22,18 @@ const Slide = ({ children, index, slidePositions, activeSlide, lastSlide }) => {
     const lastY = slidePos.y - lastActiveSlidePos.y;
 
     // animate transition to new calculated position
-    useLayoutEffect(() => {
-        const animation = [{ transform: `translate(${lastX * 100}vw, ${lastY * 100}vh)`, offset: 0.0 }, { transform: `translate(${x * 100}vw, ${y * 100}vh)`, offset: 1.0 }];
-        const timing = {
-            duration: 700,
-            fill: "forwards",
-            easing: "ease-in-out"
-        };
-
-        if (ref.current) {
-            ref.current.animate(animation, timing);
-        }
-    });
-
+    const ref = useAnimation(
+        animate => {
+            const keyframes = [{ transform: `translate(${lastX * 100}vw, ${lastY * 100}vh)`, offset: 0.0 }, { transform: `translate(${x * 100}vw, ${y * 100}vh)`, offset: 1.0 }];
+            const timing = {
+                duration: 500,
+                fill: "forwards",
+                easing: "ease-in-out"
+            };
+            animate(keyframes, timing);
+        },
+        [activeSlide]
+    );
     return (
         <div ref={ref} className={content}>
             {children}

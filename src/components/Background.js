@@ -7,7 +7,9 @@ const Background = () => {
         if (ref.current) {
             const canvas = ref.current;
             canvas.style = "position: fixed; z-index: -1; top: 0; left: 0;";
-            particleSim(canvas);
+            try {
+                particleSim(canvas);
+            } catch (e) {}
         }
     }, []);
     return <canvas ref={ref} />;

@@ -22,7 +22,6 @@ const SlideContainer = ({ children, activeSlide, dispatch }) => {
             el.removeEventListener("scroll", setSlide);
         };
     });
-    console.log(children);
     return (
         <div ref={ref} className={container}>
             {children}

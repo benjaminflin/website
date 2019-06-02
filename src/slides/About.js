@@ -28,7 +28,7 @@ const About = ({ active }) => {
             <div className={separator} ref={separatorRef} />
             <p ref={textRef} className={paragraph}>
                 <strong className={strong}>H</strong>i, I'm Ben Flin. I grew up in Davis, California and I'm currently enrolled at Columbia University (CC, '21), majoring in Computer Science. I do
-                frontend development right now and I'm currently teaching myself about machine learning. I also play jazz piano and love{" "}
+                frontend development right now and I'm currently teaching myself machine learning. I also play jazz piano and love{" "}
                 <a className={link} href="https://open.spotify.com/playlist/3TbVlB1eSakKQozECtUSLr">
                     listening
                 </a>{" "}

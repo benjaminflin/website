@@ -1,5 +1,0 @@
-#39393A - dark gray
-#E6E6E6 - light gray
-#FF8552 - orange
-#297373 - turqoise
-#85FFC7 - light green

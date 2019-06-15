@@ -43,3 +43,19 @@
     overflow: hidden;
     padding: 5px;
 }
+
+.scroll {
+    font-size: 10pt;
+    position: absolute;
+    bottom: 0;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.scroll > * {
+    margin: 5px;
+}
+.scroll > a:hover {
+    transform: scale(1.1);
+}

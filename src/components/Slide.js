@@ -1,4 +1,6 @@
 import React from "react";
 import { content } from "./Slide.module.css";
-const Slide = ({ children }) => <div className={content}>{children}</div>;
+const Slide = ({ children }) => (
+    <section className={content}>{children}</section>
+);
 export default Slide;

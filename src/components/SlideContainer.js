@@ -1,35 +1,29 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { container } from "./Slide.module.css";
 const SlideContainer = ({ children, activeSlide, dispatch }) => {
-    const ref = useRef(null);
-
     // updates active slide based on target scroll position
     useEffect(() => {
         const setSlide = ({ target }) => {
             // calculate current slide number from window height (slide height)
-            const position = Math.round(target.scrollTop / window.innerHeight);
+            const position = Math.round(window.scrollY / window.innerHeight);
 
             // only update if position has changed
-            if (position !== activeSlide) dispatch({ type: "CHANGE_SLIDE", slide: position });
+            if (position !== activeSlide)
+                dispatch({ type: "CHANGE_SLIDE", slide: position });
         };
 
         // add/remove listeners
-        const el = ref.current;
-        el.addEventListener("scroll", setSlide);
+        window.addEventListener("scroll", setSlide);
 
         return () => {
-            el.removeEventListener("scroll", setSlide);
+            window.removeEventListener("scroll", setSlide);
         };
     });
     useEffect(() => {
         dispatch({ type: "SET_NUM_SLIDES", numSlides: children.length });
     }, [dispatch, children]);
-    return (
-        <div ref={ref} className={container}>
-            {children}
-        </div>
-    );
+    return <div className={container}>{children}</div>;
 };
 
 export default connect(({ activeSlide }) => ({ activeSlide }))(SlideContainer);

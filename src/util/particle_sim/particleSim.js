@@ -141,29 +141,42 @@ const particleSim = canvas => {
         // position simulation with curl noise
         positionShader.setVariable(posVar, 0);
         positionShader.setVariable(velVar, 1);
-        positionShader.setUniform({ name: "time", type: "float", length: "1", value: [time++] });
+        positionShader.setUniform({
+            name: "time",
+            type: "float",
+            length: "1",
+            value: [time++]
+        });
         posVar = positionShader.execute("var_position");
         return positionShader.read();
     };
 
     // rendering logic
-    const { canvas: renderCanvas, gl: gl2 } = createGLContext(window.innerWidth, window.innerHeight, true, canvas);
-    gl2.clearColor(0.2, 0.2, 0.2, 1);
+    const { canvas: renderCanvas, gl: gl2 } = createGLContext(
+        window.innerWidth,
+        window.innerHeight,
+        true,
+        canvas
+    );
+    gl2.clearColor(0.1, 0.1, 0.1, 1);
     document.body.appendChild(renderCanvas);
     const vertexShader = `
         attribute vec4 position;
         void main(void) {
             gl_Position = position;
-            gl_PointSize = 10.0;
+            gl_PointSize = ${(5.0 * window.devicePixelRatio).toFixed(1)};
         }
     `;
     const fragmentShader = `
         precision mediump float;
         void main(void) {
-            gl_FragColor = vec4(vec3(0.3), 1.0);
+            gl_FragColor = vec4(vec3(0.2), 1.0);
         }
     `;
-    const shader = createShader({ vertexSource: vertexShader, fragmentSource: fragmentShader })(gl2);
+    const shader = createShader({
+        vertexSource: vertexShader,
+        fragmentSource: fragmentShader
+    })(gl2);
     const update = () => {
         const data = simulate();
         const vbo = createVBO({ data })(gl2);
@@ -205,7 +218,14 @@ const particleSim2 = canvas => {
     const NUM_PARTICLES = 50;
     const MAX_LIFETIME = 300;
     const MAX_RADIUS = 10;
-    const createParticle = (x, y, dx, dy, lifetime, health = lifetime) => ({ x, y, dx, dy, lifetime, health });
+    const createParticle = (x, y, dx, dy, lifetime, health = lifetime) => ({
+        x,
+        y,
+        dx,
+        dy,
+        lifetime,
+        health
+    });
 
     for (let i = 0; i < NUM_PARTICLES; i++) {
         const x = Math.random() * canvas.width;
@@ -244,7 +264,14 @@ const particleSim2 = canvas => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "rgb(77, 77, 77)";
         for (const p of particles) {
-            const radius = MAX_RADIUS * ((Math.sin((2.0 * Math.PI * (p.lifetime - p.health)) / p.lifetime - Math.PI / 2) + 1.0) / 2.0);
+            const radius =
+                MAX_RADIUS *
+                ((Math.sin(
+                    (2.0 * Math.PI * (p.lifetime - p.health)) / p.lifetime -
+                        Math.PI / 2
+                ) +
+                    1.0) /
+                    2.0);
             ctx.beginPath();
             ctx.arc(p.x, p.y, radius, 0, 2 * Math.PI);
             ctx.fill();

@@ -57,10 +57,10 @@ const Video = ({ active }) => {
             <h1 ref={headerRef}>Video</h1>
             <div ref={separatorRef} className={separator} />
             <p ref={descriptionRef} className={description}>
-                This video is of me playing over my composition,
-                &ldquot;Banality of Evil,&rdquot; at Shine Cafe in Sacramento,
-                CA. If you want to get together to play or hire me for a gig,
-                just contact me at my <a href="mailto:ben@flin.org">phone</a> or{" "}
+                This video is of me playing over my composition, &ldquo;Banality
+                of Evil,&rdquo; at Shine Cafe in Sacramento, CA. If you want to
+                get together to play or hire me for a gig, just contact me at my{" "}
+                <a href="mailto:ben@flin.org">phone</a> or{" "}
                 <a href="tel:(530)-400-1959">email.</a>
             </p>
             <small ref={creditsRef} className={credits}>

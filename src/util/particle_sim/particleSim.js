@@ -7,21 +7,7 @@ import { stream, debounce } from "../stream";
 import velocityComputeShader from "./velocityShader.js";
 import positionComputeShader from "./positionShader.js";
 
-const isMobileBrowser = () =>
-    navigator.userAgent.match(/Android/i) ||
-    navigator.userAgent.match(/webOS/i) ||
-    navigator.userAgent.match(/iPhone/i) ||
-    navigator.userAgent.match(/iPad/i) ||
-    navigator.userAgent.match(/iPod/i) ||
-    navigator.userAgent.match(/BlackBerry/i) ||
-    navigator.userAgent.match(/Windows Phone/i);
-
 const particleSim = canvas => {
-    // check if mobile browser and use second particle sim
-    if (isMobileBrowser()) {
-        return particleSim2(canvas);
-    }
-
     // create canvas context
     const SIM_SIZE = 128;
     let gl;

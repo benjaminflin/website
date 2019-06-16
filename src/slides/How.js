@@ -52,12 +52,12 @@ const How = ({ active }) => {
                 to challenge myself, so every component is made from the tools
                 only given by <code>create-react-app</code> cli and redux. The
                 particle system in the background was made in{" "}
-                <code>webgl2</code> (or <code>canvas2d</code> on mobile and
-                safari). For the browsers that support <code>webgl2</code>, I
-                used shaders to compute the positions of the particles after
-                filtering them through a curl noise functions and used floating
-                point textures to read and display them. This website is still
-                in development so I expect some minor changes in the future.
+                <code>webgl2</code> (or <code>canvas2d</code> on safari/ie). For
+                the browsers that support <code>webgl2</code>, I used shaders to
+                compute the positions of the particles after filtering them
+                through a curl noise functions and used floating point textures
+                to read and display them. This website is still in development
+                so I expect some minor changes in the future.
             </p>
         </div>
     );

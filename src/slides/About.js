@@ -26,19 +26,24 @@ const About = ({ active }) => {
         [active]
     );
 
-    const fadeAnimation = animate => {
-        const keyframes = [{ opacity: 0 }, { opacity: 1 }];
+    const fadeInAnimation = (delay = 0) => animate => {
+        const keyframes = [
+            { opacity: 0, transform: "translateY(10px)" },
+            { opacity: 1, transform: "translateY(0)" }
+        ];
         const options = {
             duration: 900,
+            delay,
             easing: "ease-in-out",
             fill: "forwards"
         };
         if (!active) options.direction = "reverse";
         animate(keyframes, options);
     };
-    const textRef = useAnimation(fadeAnimation, [active]);
-    const imgRef = useAnimation(fadeAnimation, [active]);
-    const headerRef = useAnimation(fadeAnimation, [active]);
+
+    const textRef = useAnimation(fadeInAnimation(), [active]);
+    const imgRef = useAnimation(fadeInAnimation(50), [active]);
+    const headerRef = useAnimation(fadeInAnimation(150), [active]);
     return (
         <div className={container}>
             <a href="https://facebook.com/benrflin">
@@ -58,14 +63,14 @@ const About = ({ active }) => {
                 currently enrolled at Columbia University (CC, '21), majoring in
                 Computer Science. I do frontend development right now and I'm
                 currently teaching myself machine learning. I also play jazz
-                piano and love{" "}
+                piano. Check out my{" "}
                 <a
                     className={link}
                     href="https://open.spotify.com/playlist/3TbVlB1eSakKQozECtUSLr"
                 >
-                    listening
+                    spotify playlist
                 </a>{" "}
-                to jazz.
+                if you're interested in what I'm listening to.
             </p>
         </div>
     );

@@ -6,7 +6,8 @@ import LinearProgress from "./components/LinearProgress";
 import Welcome from "./slides/Welcome";
 import Background from "./components/Background";
 import About from "./slides/About";
-import Credits from "./slides/Credits";
+import Video from "./slides/Video";
+import How from "./slides/How";
 const App = ({ dispatch, activeSlide }) => {
     return (
         <div>
@@ -20,7 +21,10 @@ const App = ({ dispatch, activeSlide }) => {
                     <About active={activeSlide === 1} />
                 </Slide>
                 <Slide index={2}>
-                    <Credits active={activeSlide === 2} />
+                    <Video active={activeSlide === 2} />
+                </Slide>
+                <Slide index={3}>
+                    <How active={activeSlide === 3} />
                 </Slide>
             </SlideContainer>
         </div>

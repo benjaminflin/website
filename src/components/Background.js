@@ -8,7 +8,7 @@ const Background = () => {
             const canvas = ref.current;
             canvas.style = "position: fixed; z-index: -1; top: 0; left: 0;";
             try {
-                setTimeout(() => particleSim(canvas), 900);
+                setTimeout(() => particleSim(canvas), 500);
             } catch (e) {
                 console.error(e);
             }

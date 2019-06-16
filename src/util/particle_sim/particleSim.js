@@ -6,7 +6,22 @@ import createShader from "./createShader";
 import { stream, debounce } from "../stream";
 import velocityComputeShader from "./velocityShader.js";
 import positionComputeShader from "./positionShader.js";
+
+const isMobileBrowser = () =>
+    navigator.userAgent.match(/Android/i) ||
+    navigator.userAgent.match(/webOS/i) ||
+    navigator.userAgent.match(/iPhone/i) ||
+    navigator.userAgent.match(/iPad/i) ||
+    navigator.userAgent.match(/iPod/i) ||
+    navigator.userAgent.match(/BlackBerry/i) ||
+    navigator.userAgent.match(/Windows Phone/i);
+
 const particleSim = canvas => {
+    // check if mobile browser and use second particle sim
+    if (isMobileBrowser()) {
+        return particleSim2(canvas);
+    }
+
     // create canvas context
     const SIM_SIZE = 128;
     let gl;
@@ -134,7 +149,7 @@ const particleSim = canvas => {
     });
 };
 
-// backup particle simulation for browsers without webgl2
+// backup particle simulation for browsers without webgl2 or for mobile browsers
 const particleSim2 = canvas => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -142,6 +157,7 @@ const particleSim2 = canvas => {
     const particles = [];
     const NUM_PARTICLES = 50;
     const MAX_LIFETIME = 300;
+    const MIN_LIFETIME = 10;
     const MAX_RADIUS = 10;
     const createParticle = (x, y, dx, dy, lifetime, health = lifetime) => ({
         x,
@@ -157,7 +173,10 @@ const particleSim2 = canvas => {
         const y = Math.random() * canvas.height;
         const dx = Math.random() * 2.0 - 1.0;
         const dy = Math.random() * 2.0 - 1.0;
-        const lifetime = Math.floor(Math.random() * MAX_LIFETIME);
+        const lifetime = Math.max(
+            Math.floor(Math.random() * MAX_LIFETIME),
+            MIN_LIFETIME
+        );
         particles.push(createParticle(x, y, dx, dy, lifetime));
     }
 
@@ -166,7 +185,10 @@ const particleSim2 = canvas => {
         const y = Math.random() * canvas.height;
         const dx = Math.random() * 2.0 - 1.0;
         const dy = Math.random() * 2.0 - 1.0;
-        const lifetime = Math.floor(Math.random() * MAX_LIFETIME);
+        const lifetime = Math.max(
+            Math.floor(Math.random() * MAX_LIFETIME),
+            MIN_LIFETIME
+        );
         p.x = x;
         p.y = y;
         p.dx = dx;
@@ -214,7 +236,7 @@ const particleSim2 = canvas => {
         window.addEventListener("resize", () => {
             emit(null);
         });
-    }).pipe(debounce(500));
+    }).pipe(debounce(300));
 
     resize$.subscribe(() => {
         canvas.width = window.innerWidth;

@@ -11,28 +11,12 @@
     height: 100%;
 }
 
-.header {
-    margin: 0;
-    font-family: "Nunito", sans-serif;
-    font-weight: 600;
-}
-
-.paragraph {
-    margin: 0 10vw;
-}
-
-.link {
-    color: lightblue;
-}
-
-.profile {
-    border-radius: 50%;
+.logo {
     width: 10vw;
-    transition: transform 100ms ease-in-out;
 }
 
-.profile:hover {
-    transform: scale(1.1) rotate(5deg);
+.content {
+    margin: 2vw 10vw;
 }
 
 .separator {
@@ -40,4 +24,7 @@
     background-color: rgba(255, 255, 255, 0.3);
     width: 30vw;
     margin: 10px;
+}
+.content > code {
+    font-size: 10pt;
 }

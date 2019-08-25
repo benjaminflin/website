@@ -1,46 +1,49 @@
 .container {
-    font-family: "Nunito", medium-content-serif-font, Georgia, Cambria,
-        "Times New Roman", Times, serif;
-    font-weight: 200;
-    text-align: left;
-    font-size: 11pt;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+  font-family: "Nunito", medium-content-serif-font, Georgia, Cambria,
+    "Times New Roman", Times, serif;
+  font-weight: 200;
+  text-align: left;
+  font-size: 11pt;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
+.container > h1 {
+  margin: 5px;
+}
 .video {
-    border-radius: 10px;
-    margin: 10px;
-    width: 90vw;
-    height: calc(90vw * 9 / 16);
-    max-width: 600px;
-    max-height: calc(600px * 9 / 16);
+  border-radius: 10px;
+  margin: 10px;
+  width: 90vw;
+  height: calc(90vw * 9 / 16);
+  max-width: 600px;
+  max-height: calc(600px * 9 / 16);
 }
 
 .separator {
-    height: 2px;
-    background-color: rgba(255, 255, 255, 0.3);
-    width: 30vw;
-    margin: 10px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 30vw;
+  margin: 10px;
 }
 
 .credits {
-    color: #aaa;
-    font-size: 7pt;
-    margin: 5px;
+  color: #aaa;
+  font-size: 7pt;
+  margin: 5px;
 }
 
 .description {
-    margin: 10px 10vw;
+  margin: 10px 10vw;
 }
-.description a {
-    color: white;
-    text-decoration: underline;
-    display: inline-block;
+.link {
+  text-decoration: underline;
+  display: inline-block;
+  color: lightblue;
 }
-.description a:hover {
-    transform: scale(1.1);
+.link:hover {
+  transform: scale(1.1);
 }

@@ -1,43 +1,48 @@
 .container {
-    font-family: "Nunito", medium-content-serif-font, Georgia, Cambria,
-        "Times New Roman", Times, serif;
-    font-weight: 200;
-    text-align: left;
-    font-size: 11pt;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+  font-family: "Nunito", medium-content-serif-font, Georgia, Cambria,
+    "Times New Roman", Times, serif;
+  font-weight: 200;
+  text-align: left;
+  font-size: 11pt;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .header {
-    margin: 0;
-    font-family: "Nunito", sans-serif;
-    font-weight: 600;
+  margin: 0;
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
 }
 
 .paragraph {
-    margin: 0 10vw;
+  margin: 0 10vw;
 }
 
 .link {
-    color: lightblue;
+  text-decoration: underline;
+  color: lightblue;
+  display: inline-block;
+}
+.link:hover {
+  transform: scale(1.1);
 }
 
 .profile {
-    border-radius: 50%;
-    width: 10vw;
-    transition: transform 100ms ease-in-out;
+  border-radius: 50%;
+  width: 10vw;
+  transition: transform 100ms ease-in-out;
 }
 
 .profile:hover {
-    transform: scale(1.1) rotate(5deg);
+  transform: scale(1.1) rotate(5deg);
 }
 
 .separator {
-    height: 1px;
-    background-color: rgba(255, 255, 255, 0.3);
-    width: 30vw;
-    margin: 10px;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 30vw;
+  margin: 10px;
 }

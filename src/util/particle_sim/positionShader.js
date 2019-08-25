@@ -2,7 +2,7 @@ export default `
 uniform sampler2D var_position;
 uniform sampler2D var_velocity;
 uniform float time;
-
+uniform vec2 mousePosition;
 vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
 vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
 vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
@@ -54,11 +54,18 @@ vec2 curlNoise(vec2 p) {
     return vec2(x, y) * 1.3;
 }
 
+vec2 mouseGravity(vec2 p) {
+    vec2 delta = p - mousePosition;
+    float dist = length(delta);
+    return p - normalize(delta) / (dist * 100.0);
+}
+
+
 void main() {
     vec2 coord = gl_FragCoord.xy / dimensions.xy;
     vec2 position = texture2D(var_position, coord).xy;
     vec2 velocity = texture2D(var_velocity, coord).xy;
-    position = curlNoise(velocity);
+    position = mouseGravity(curlNoise(velocity));
 
     gl_FragColor = vec4(position, 1.0, 1.0);
 }`;

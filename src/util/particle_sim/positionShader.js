@@ -1,71 +1,122 @@
 export default `
 uniform sampler2D var_position;
-uniform sampler2D var_velocity;
+uniform sampler2D var_random;
 uniform float time;
 uniform vec2 mousePosition;
-vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+uniform vec2 lastMousePosition;
 
-float snoise2(vec2 v) {
-    const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
-                        0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
-                        -0.577350269189626,  // -1.0 + 2.0 * C.x
-                        0.024390243902439); // 1.0 / 41.0
-    vec2 i  = floor(v + dot(v, C.yy) );
-    vec2 x0 = v -   i + dot(i, C.xx);
-    vec2 i1;
-    i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-    vec4 x12 = x0.xyxy + C.xxzz;
-    x12.xy -= i1;
-    i = mod289(i); // Avoid truncation effects in permutation
-    vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
-        + i.x + vec3(0.0, i1.x, 1.0 ));
+/*
+ * Simplex Noise Algorithm
+ * Taken from https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83 
+*/
 
-    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
-    m = m*m ;
-    m = m*m ;
-    vec3 x = 2.0 * fract(p * C.www) - 1.0;
-    vec3 h = abs(x) - 0.5;
-    vec3 ox = floor(x + 0.5);
-    vec3 a0 = x - ox;
-    m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
-    vec3 g;
-    g.x  = a0.x  * x0.x  + h.x  * x0.y;
-    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-    return 130.0 * dot(m, g);
+//	Simplex 3D Noise 
+//	by Ian McEwan, Ashima Arts
+//
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+
+float snoise(vec3 v){ 
+  const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+  const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+
+// First corner
+  vec3 i  = floor(v + dot(v, C.yyy) );
+  vec3 x0 =   v - i + dot(i, C.xxx) ;
+
+// Other corners
+  vec3 g = step(x0.yzx, x0.xyz);
+  vec3 l = 1.0 - g;
+  vec3 i1 = min( g.xyz, l.zxy );
+  vec3 i2 = max( g.xyz, l.zxy );
+
+  //  x0 = x0 - 0. + 0.0 * C 
+  vec3 x1 = x0 - i1 + 1.0 * C.xxx;
+  vec3 x2 = x0 - i2 + 2.0 * C.xxx;
+  vec3 x3 = x0 - 1. + 3.0 * C.xxx;
+
+// Permutations
+  i = mod(i, 289.0 ); 
+  vec4 p = permute( permute( permute( 
+             i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+           + i.y + vec4(0.0, i1.y, i2.y, 1.0 )) 
+           + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+
+// Gradients
+// ( N*N points uniformly over a square, mapped onto an octahedron.)
+  float n_ = 1.0/7.0; // N=7
+  vec3  ns = n_ * D.wyz - D.xzx;
+
+  vec4 j = p - 49.0 * floor(p * ns.z *ns.z);  //  mod(p,N*N)
+
+  vec4 x_ = floor(j * ns.z);
+  vec4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)
+
+  vec4 x = x_ *ns.x + ns.yyyy;
+  vec4 y = y_ *ns.x + ns.yyyy;
+  vec4 h = 1.0 - abs(x) - abs(y);
+
+  vec4 b0 = vec4( x.xy, y.xy );
+  vec4 b1 = vec4( x.zw, y.zw );
+
+  vec4 s0 = floor(b0)*2.0 + 1.0;
+  vec4 s1 = floor(b1)*2.0 + 1.0;
+  vec4 sh = -step(h, vec4(0.0));
+
+  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+
+  vec3 p0 = vec3(a0.xy,h.x);
+  vec3 p1 = vec3(a0.zw,h.y);
+  vec3 p2 = vec3(a1.xy,h.z);
+  vec3 p3 = vec3(a1.zw,h.w);
+
+//Normalise gradients
+  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+  p0 *= norm.x;
+  p1 *= norm.y;
+  p2 *= norm.z;
+  p3 *= norm.w;
+
+// Mix final noise value
+  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+  m = m * m;
+  return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), 
+                                dot(p2,x2), dot(p3,x3) ) );
 }
+// END Simplex Noise
 
-float snoise(vec2 v) {
-    vec2 r = texture2D(var_velocity, vec2(0.0,0.0)).xy;
-    return (snoise2(v) + snoise2(v + r)) / 2.0;
-}
+
+float snoise2(vec2 p) {
+    return snoise(vec3(p*2.0, time*0.005));
+} 
 vec2 curlNoise(vec2 p) {
-    const float e = 0.1;
+    const float e = 0.0001;
 
-    float n1 = snoise(vec2(p.x, p.y + e));
-    float n2 = snoise(vec2(p.x, p.y - e));
-    float n3 = snoise(vec2(p.x + e, p.y));
-    float n4 = snoise(vec2(p.x - e, p.y));
+    float n1 = snoise2(vec2(p.x + e, p.y));
+    float n2 = snoise2(vec2(p.x - e, p.y));
+    float n3 = snoise2(vec2(p.x, p.y + e));
+    float n4 = snoise2(vec2(p.x, p.y - e));
+
+    float dFdx = (n1 - n2) / (2.0 * e);
+    float dFdy = (n3 - n4) / (2.0 * e);
     
-    float x = n2 - n1;
-    float y = n4 - n3;
-
-    return vec2(x, y) * 1.3;
+    return vec2(dFdy, -dFdx);
 }
 
-vec2 mouseGravity(vec2 p) {
+
+vec2 gravity(vec2 p) {
     vec2 delta = p - mousePosition;
-    float dist = length(delta);
-    return p - normalize(delta) / (dist * 100.0);
+    float dist = max(length(delta), 0.05);
+    return (mousePosition - lastMousePosition) / (dist * dist);
 }
 
 
 void main() {
     vec2 coord = gl_FragCoord.xy / dimensions.xy;
     vec2 position = texture2D(var_position, coord).xy;
-    vec2 velocity = texture2D(var_velocity, coord).xy;
-    position = mouseGravity(curlNoise(velocity));
-
-    gl_FragColor = vec4(position, 1.0, 1.0);
+    vec2 random = texture2D(var_random, coord).xy;
+    const float timeScale = 0.0001;
+    const float gravityScale = 10.0;
+    gl_FragColor = vec4(position + timeScale*(curlNoise(position) + gravityScale*gravity(position)), 1.0, 1.0);
 }`;

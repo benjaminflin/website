@@ -4,27 +4,29 @@ import createVAO from "./createVAO";
 import createGLContext from "./createGLContext";
 import createShader from "./createShader";
 import { stream, debounce } from "../stream";
-import velocityComputeShader from "./velocityShader.js";
 import positionComputeShader from "./positionShader.js";
 
-const particleSim = canvas => {
+const particleSim = (canvas, callback = () => {}) => {
+  const detectMobile = () => {
+    if (window.innerWidth <= 800 && window.innerHeight <= 600) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  if (detectMobile()) {
+    return particleSim2(canvas, callback);
+  }
   // create canvas context
   const SIM_SIZE = 128;
   let gl;
   try {
     gl = createGLContext(SIM_SIZE, SIM_SIZE, false).gl;
   } catch (e) {
-    return particleSim2(canvas);
+    return particleSim2(canvas, callback);
   }
   const NUM_PARTICLES = SIM_SIZE * SIM_SIZE * 4;
-
-  // Note: although this is called velocity, it really doesn't act like it
-  // in the simulation. I just needed a bunch of random values that change regularly over time to feed into the curl noise
-  const velocityShader = createProgram({
-    shader: velocityComputeShader,
-    width: SIM_SIZE,
-    height: SIM_SIZE
-  })(gl);
 
   const positionShader = createProgram({
     shader: positionComputeShader,
@@ -43,32 +45,29 @@ const particleSim = canvas => {
     }
     return new Float32Array(data);
   };
-  // variables setup
+
   let posVar = createVariable({
-    data: getRandomData(128, 128),
+    data: getRandomData(SIM_SIZE, SIM_SIZE),
     width: SIM_SIZE,
     height: SIM_SIZE,
     name: "var_position"
   })(gl);
 
-  let velVar = createVariable({
-    data: getRandomData(128, 128),
+  let time = 0;
+  const noiseVar = createVariable({
+    data: getRandomData(SIM_SIZE, SIM_SIZE),
     width: SIM_SIZE,
     height: SIM_SIZE,
-    name: "var_velocity"
+    name: "var_random"
   })(gl);
 
-  let time = 0;
-
   let mousePosition = { x: 0, y: 0 };
+  let lastMousePosition = { x: 0, y: 0 };
   const simulate = () => {
-    // velocity simulation
-    velocityShader.setVariable(velVar, 0);
-    velVar = velocityShader.execute("var_velocity");
-
     // position simulation with curl noise
+    // positionShader.setVariable(posVar, 0);
     positionShader.setVariable(posVar, 0);
-    positionShader.setVariable(velVar, 1);
+    positionShader.setVariable(noiseVar, 1);
 
     positionShader.setUniform({
       name: "time",
@@ -82,11 +81,20 @@ const particleSim = canvas => {
       length: "2",
       value: [mousePosition.x, mousePosition.y]
     });
+
+    positionShader.setUniform({
+      name: "lastMousePosition",
+      type: "float",
+      length: "2",
+      value: [lastMousePosition.x, lastMousePosition.y]
+    });
     posVar = positionShader.execute("var_position");
     return positionShader.read();
   };
 
-  window.addEventListener("mousemove", ({ clientX, clientY }) => {
+  window.addEventListener("mousemove", event => {
+    const { clientX, clientY } = event;
+    lastMousePosition = { x: mousePosition.x, y: mousePosition.y };
     mousePosition.x = (clientX / window.innerWidth) * 2 - 1.0;
     mousePosition.y = -((clientY / window.innerHeight) * 2 - 1.0);
   });
@@ -117,6 +125,7 @@ const particleSim = canvas => {
     vertexSource: vertexShader,
     fragmentSource: fragmentShader
   })(gl2);
+  let init = false;
   const update = () => {
     const data = simulate();
     const vbo = createVBO({ data })(gl2);
@@ -126,7 +135,11 @@ const particleSim = canvas => {
     shader.bind();
     gl2.clear(gl.COLOR_BUFFER_BIT);
     gl2.drawArrays(gl.POINTS, 0, data.length / 4);
-    requestIdleCallback(update);
+    if (!init) {
+      callback();
+      init = true;
+    }
+    requestAnimationFrame(update);
   };
   update();
   const resize = (width, height) => {
@@ -150,7 +163,7 @@ const particleSim = canvas => {
 };
 
 // backup particle simulation for browsers without webgl2 or for mobile browsers
-const particleSim2 = canvas => {
+const particleSim2 = (canvas, callback) => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   const ctx = canvas.getContext("2d");
@@ -224,10 +237,14 @@ const particleSim2 = canvas => {
       ctx.closePath();
     }
   };
-
+  let init = false;
   const animate = () => {
     update();
     draw();
+    if (!init) {
+      callback();
+      init = true;
+    }
     requestAnimationFrame(animate);
   };
 

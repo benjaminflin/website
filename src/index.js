@@ -1,6 +1,6 @@
 import "web-animations-js";
 import React from "react";
-import ReactDOM from "react-dom";
+import { hydrate, render } from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import reducer from "./reducer";
@@ -9,9 +9,16 @@ import "./index.css";
 
 const store = createStore(reducer);
 
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.getElementById("root")
+const rootElement = document.getElementById("root");
+
+const app = (
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
+
+if (rootElement.hasChildNodes()) {
+  hydrate(app, rootElement);
+} else {
+  render(app, rootElement);
+}

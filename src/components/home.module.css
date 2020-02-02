@@ -1,0 +1,90 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-family: "Roboto", sans-serif;
+  font-weight: 100;
+}
+
+.center {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.title {
+  display: block;
+  font-size: 52pt;
+  margin: 0.25em;
+}
+
+.title > * {
+  vertical-align: middle;
+}
+.separator {
+  height: 1em;
+  width: 1px;
+  background-color: white;
+  display: inline-block;
+}
+
+.name {
+  overflow: hidden;
+  display: inline-block;
+  padding: 0 5px;
+  height: 1em;
+}
+
+.subtitle {
+  display: block;
+  font-size: 11pt;
+  font-weight: 300;
+  margin: 0.5em 1em;
+}
+
+.links {
+  display: block;
+  margin: 0.5em;
+  font-size: 10pt;
+}
+.links svg {
+  stroke: white;
+  width: 1.3em;
+}
+.links a {
+  margin: 0.5em;
+  color: white;
+  text-decoration: none;
+}
+.links a:hover {
+  transform: scale(1.1);
+}
+
+.personal,
+.portfolio {
+  font-size: 9pt;
+  font-weight: 500;
+  font-family: monospace;
+  position: absolute;
+  padding: 1em;
+  color: gray;
+  top: 50%;
+  transform: translateY(-50%);
+  text-decoration: line-through;
+}
+
+.personal:hover,
+.portfolio:hover {
+  /* transform: translateY(-50%) scale(1.1); */
+}
+
+.personal {
+  left: 0;
+}
+
+.portfolio {
+  right: 0;
+}

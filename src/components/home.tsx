@@ -53,9 +53,13 @@ const Main = () => {
   return (
     <main className={container}>
       <div className={center}>
-        <Link to="/">
-          <div className={personal}>{"<< Personal"}</div>
-        </Link>
+        <div className={personal}>
+          <Link to="/">{"<< Personal"}</Link>
+        </div>
+
+        <div className={portfolio}>
+          <Link to="/">{"Portfolio >>"}</Link>
+        </div>
         <div className={title}>
           <div className={name}>
             <animated.div style={fromRight}>ben</animated.div>
@@ -83,9 +87,6 @@ const Main = () => {
             <FacebookIcon />
           </a>
         </animated.div>
-        <Link to="/">
-          <div className={portfolio}>{"Portfolio >>"}</div>
-        </Link>
       </div>
     </main>
   );
@@ -104,8 +105,8 @@ const Home = ({ path }) => {
       }
     })
   );
+
   return (
-    // <Main />
     <Loader promise={particles.current} debounceMs={2000}>
       {canvas => (
         <>

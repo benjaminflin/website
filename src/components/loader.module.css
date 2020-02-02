@@ -1,3 +1,7 @@
+body {
+  overflow: hidden;
+}
+
 .main {
   background: #333;
   width: 100vw;

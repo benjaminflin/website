@@ -63,6 +63,12 @@
   transform: scale(1.1);
 }
 
+.personal > *,
+.portfolio > * {
+  color: gray;
+  text-decoration: line-through;
+}
+
 .personal,
 .portfolio {
   font-size: 9pt;
@@ -70,21 +76,39 @@
   font-family: monospace;
   position: absolute;
   padding: 1em;
-  color: gray;
-  top: 50%;
-  transform: translateY(-50%);
-  text-decoration: line-through;
+}
+
+@media (min-width: 768px) {
+  .personal,
+  .portfolio {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .personal {
+    left: 0;
+  }
+
+  .portfolio {
+    right: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .personal,
+  .portfolio {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .personal {
+    top: 0;
+  }
+  .portfolio {
+    bottom: 0;
+  }
 }
 
 .personal:hover,
 .portfolio:hover {
   /* transform: translateY(-50%) scale(1.1); */
-}
-
-.personal {
-  left: 0;
-}
-
-.portfolio {
-  right: 0;
 }

@@ -27,7 +27,7 @@ const particleSim = (canvas, callback = () => {}) => {
   }
   const NUM_PARTICLES = SIM_SIZE * SIM_SIZE * 4;
 
-  const positionShader = createProgram({
+  let positionShader = createProgram({
     shader: positionComputeShader,
     width: SIM_SIZE,
     height: SIM_SIZE
@@ -110,13 +110,13 @@ const particleSim = (canvas, callback = () => {}) => {
         attribute vec4 position;
         void main(void) {
             gl_Position = position;
-            gl_PointSize = ${(1.5 * window.devicePixelRatio).toFixed(1)};
+            gl_PointSize = ${(2.0 * window.devicePixelRatio).toFixed(1)};
         }
     `;
   const fragmentShader = `
         precision mediump float;
         void main(void) {
-            gl_FragColor = vec4(vec3(1.0), 0.025);
+            gl_FragColor = vec4(vec3(1.0), 0.05);
         }
     `;
   const shader = createShader({
@@ -124,6 +124,7 @@ const particleSim = (canvas, callback = () => {}) => {
     fragmentSource: fragmentShader
   })(gl2);
   let init = false;
+  let stop = false;
   const update = () => {
     const data = simulate();
     const vbo = createVBO({ data })(gl2);
@@ -137,7 +138,7 @@ const particleSim = (canvas, callback = () => {}) => {
       callback(canvas);
       init = true;
     }
-    requestAnimationFrame(update);
+    if (!stop) requestAnimationFrame(update);
   };
   update();
   const resize = (width, height) => {
@@ -246,6 +247,8 @@ const particleSim2 = (canvas, callback) => {
   });
 
   animate();
+
+  return _ => {};
 };
 
 export default particleSim;

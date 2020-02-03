@@ -5,7 +5,7 @@ import createGLContext from "./createGLContext";
 import createShader from "./createShader";
 import positionComputeShader from "./positionShader.js";
 
-const particleSim = (canvas, callback = () => {}) => {
+const particleSim = (canvas, callback) => {
   const detectMobile = () => {
     if (window.innerWidth <= 800 && window.innerHeight <= 600) {
       return true;
@@ -18,7 +18,7 @@ const particleSim = (canvas, callback = () => {}) => {
     return particleSim2(canvas, callback);
   }
   // create canvas context
-  const SIM_SIZE = 512;
+  const SIM_SIZE = 256;
   let gl;
   try {
     gl = createGLContext(SIM_SIZE, SIM_SIZE, false).gl;
@@ -153,6 +153,10 @@ const particleSim = (canvas, callback = () => {}) => {
   window.addEventListener("resize", () => {
     resize(window.innerWidth, window.innerHeight);
   });
+
+  return () => {
+    stop = true;
+  };
 };
 
 // backup particle simulation for browsers without webgl2 or for mobile browsers
@@ -248,7 +252,7 @@ const particleSim2 = (canvas, callback) => {
 
   animate();
 
-  return _ => {};
+  return () => {};
 };
 
 export default particleSim;

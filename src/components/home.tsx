@@ -1,13 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import { useSpring, animated } from "react-spring";
-import Background from "../components/background";
-import Loader from "../components/loader";
-import particleSim from "../particlesim";
-// @ts-ignore
 import InstagramIcon from "../images/instagram.svg";
-// @ts-ignore
 import GithubIcon from "../images/github.svg";
-// @ts-ignore
 import FacebookIcon from "../images/facebook.svg";
 import {
   container,
@@ -19,10 +13,8 @@ import {
   subtitle,
   personal,
   portfolio
-  // @ts-ignore
 } from "./home.module.css";
 import { Link } from "gatsby";
-
 const useFadeIn = config => {
   return useSpring({
     config,
@@ -31,7 +23,7 @@ const useFadeIn = config => {
   });
 };
 
-const Main = () => {
+const Home = () => {
   const slow = useFadeIn({ tension: 25 });
   const med = useFadeIn({ tension: 50 });
   const fast = useFadeIn({ tension: 100 });
@@ -56,9 +48,8 @@ const Main = () => {
         <div className={personal}>
           <Link to="/">{"<< Personal"}</Link>
         </div>
-
         <div className={portfolio}>
-          <Link to="/">{"Portfolio >>"}</Link>
+          <Link to="/portfolio">{"Portfolio >>"}</Link>
         </div>
         <div className={title}>
           <div className={name}>
@@ -89,32 +80,6 @@ const Main = () => {
         </animated.div>
       </div>
     </main>
-  );
-};
-
-const Home = ({ path }) => {
-  const particles = useRef<Promise<HTMLCanvasElement>>(
-    new Promise(resolve => {
-      if (typeof window !== `undefined`) {
-        const canvas = document.createElement("canvas");
-        canvas.style.position = "fixed";
-        canvas.style.zIndex = "-1";
-        canvas.style.top = "0";
-        canvas.style.left = "0";
-        particleSim(canvas, resolve);
-      }
-    })
-  );
-
-  return (
-    <Loader promise={particles.current} debounceMs={2000}>
-      {canvas => (
-        <>
-          <Main />
-          <Background canvas={canvas} />
-        </>
-      )}
-    </Loader>
   );
 };
 

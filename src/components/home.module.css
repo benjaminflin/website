@@ -63,8 +63,10 @@
   transform: scale(1.1);
 }
 
-.personal > *,
 .portfolio > * {
+  color: white;
+}
+.personal > * {
   color: gray;
   text-decoration: line-through;
 }
@@ -76,6 +78,10 @@
   font-family: monospace;
   position: absolute;
   padding: 1em;
+}
+
+.portfolio:hover {
+  transform: translateY(-50%) scale(1.1);
 }
 
 @media (min-width: 768px) {
@@ -106,9 +112,4 @@
   .portfolio {
     bottom: 0;
   }
-}
-
-.personal:hover,
-.portfolio:hover {
-  /* transform: translateY(-50%) scale(1.1); */
 }

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-//@ts-ignore
 import { main, cube, side, loading } from "./loader.module.css";
 interface LoaderProps<T> {
   promise: Promise<T>;
   debounceMs?: number;
-  children?: (result: T) => React.ReactElement;
+  children: (result: T) => React.ReactElement;
 }
 
 const Fallback = () => {
@@ -25,7 +24,7 @@ const Loader: React.FC<LoaderProps<any>> = <T extends {}>({
   children,
   debounceMs
 }: LoaderProps<T>): React.ReactElement => {
-  const [result, setResult] = useState<T>(null);
+  const [result, setResult] = useState<T | null>(null);
 
   useEffect(() => {
     promise

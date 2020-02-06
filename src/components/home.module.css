@@ -80,10 +80,6 @@
   padding: 1em;
 }
 
-.portfolio:hover {
-  transform: translateY(-50%) scale(1.1);
-}
-
 @media (min-width: 768px) {
   .personal,
   .portfolio {
@@ -98,6 +94,9 @@
   .portfolio {
     right: 0;
   }
+  .portfolio:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
 }
 
 @media (max-width: 767px) {
@@ -111,5 +110,8 @@
   }
   .portfolio {
     bottom: 0;
+  }
+  .portfolio:hover {
+    transform: translateX(-50%) scale(1.1);
   }
 }

@@ -10,6 +10,7 @@
 # production
 /build
 /public
+deploy.sh
 
 # cache
 .cache
@@ -25,3 +26,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 todo
+

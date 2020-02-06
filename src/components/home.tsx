@@ -44,13 +44,13 @@ const Home = () => {
   });
   return (
     <main className={container}>
+      <div className={personal}>
+        <Link to="/">{"<< Personal"}</Link>
+      </div>
+      <div className={portfolio}>
+        <Link to="/portfolio">{"Portfolio >>"}</Link>
+      </div>
       <div className={center}>
-        <div className={personal}>
-          <Link to="/">{"<< Personal"}</Link>
-        </div>
-        <div className={portfolio}>
-          <Link to="/portfolio">{"Portfolio >>"}</Link>
-        </div>
         <div className={title}>
           <div className={name}>
             <animated.div style={fromRight}>ben</animated.div>

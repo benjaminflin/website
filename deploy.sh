@@ -1,0 +1,1 @@
+scp -r public/* ben@gate.flin.org:/usr/local/etc/httpd/httpd/htdocs/ben

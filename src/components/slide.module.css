@@ -14,4 +14,8 @@
   .slides {
     scroll-snap-type: y mandatory;
   }
+
+  .slide {
+    scroll-snap-align: start;
+  }
 }

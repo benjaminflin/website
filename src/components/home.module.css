@@ -73,6 +73,7 @@
 
 .personal,
 .portfolio {
+  z-index: 3;
   font-size: 9pt;
   font-weight: 500;
   font-family: monospace;

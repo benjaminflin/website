@@ -47,10 +47,26 @@ const Portfolio = () => {
       <div className={slides}>
         <div className={slide}>
           <Exhibit
-            src="https://icc-website.herokuapp.com/"
+            src="https://astarvis.netlify.com/"
+            title="A* Algorithm visualization"
+            subtitle="Note: Still in active development"
+            date="Winter 2020"
+            link={{
+              text: "github",
+              href: "https://github.com/benjaminflin/astarvis"
+            }}
+          />
+        </div>
+        <div className={slide}>
+          <Exhibit
+            src="https://iccwebsite.netlify.com/"
             title="International Criminal Court Exhibit"
             subtitle="Trauma, healing and hope"
             date="Summer 2018"
+            link={{
+              text: "github",
+              href: "https://github.com/benjaminflin/icc-webiste"
+            }}
           />
         </div>
         <div className={slide}>

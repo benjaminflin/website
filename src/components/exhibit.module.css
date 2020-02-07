@@ -50,13 +50,6 @@
   color: #ddd;
 }
 
-.subtitle::before {
-  content: "\201C";
-}
-.subtitle::after {
-  content: "\201D";
-}
-
 .link {
   position: absolute;
   top: 0;

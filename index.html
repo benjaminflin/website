@@ -1,52 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>ben / flin</title>
-    <link rel="icon" href="res/favicon.ico" type="image/ico" sizes="16x16" />
-    <link rel="stylesheet" href="src/index.css" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap"
-    />
-    <link rel="preload" href="src/menu.css" as="style" />
-    <link rel="preload" href="/main.html" as="fetch" crossorigin="anonymous" />
-    <link rel="preload" href="src/menu.js" as="script" />
-    <link rel="preload" href="src/template.js" as="script" />
-    <link
-      rel="preload"
-      href="src/index.js"
-      as="script"
-      crossorigin="anonymous"
-    />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Benjamin Flin is a Software Engineer, Web Developer and Musician currently studying Computer Science and Math at Columbia Univserity."
-    />
-  </head>
-  <body>
-    <script src="src/menu.js"></script>
-    <script src="src/template.js"></script>
-    <canvas id="simCanvas"></canvas>
-    <div class="background-image"></div>
-    <nav>
-      <span class="nav-logo">b / f</span>
-      <nav-menu>
-        <a href="#" class="link"><span>about</span></a>
-        <a href="#" class="link"><span>contact me</span></a>
-        <a href="#" class="link"><span>resume</span></a>
-      </nav-menu>
-    </nav>
-    <main>
-      <loadable-template href="/main.html">
-        <link rel="stylesheet" href="src/main.css" slot="preload" />
-      </loadable-template>
-    </main>
-    <script src="src/index.js" type="module" async defer></script>
-  </body>
+<html>
+    <meta charset="utf-8">
+    <head>
+        <title>ben / flin</title>
+    </head>
+    <body>
+        <script src="build/exec/output.js"></script>
+    </body>
+
 </html>
